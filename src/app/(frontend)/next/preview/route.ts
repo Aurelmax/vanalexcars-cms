@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken'
-import { draftMode } from 'next/headers'
+import { draftMode, cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
@@ -7,17 +7,10 @@ import { CollectionSlug } from 'payload'
 
 const payloadToken = 'payload-token'
 
-export async function GET(
-  req: Request & {
-    cookies: {
-      get: (name: string) => {
-        value: string
-      }
-    }
-  },
-): Promise<Response> {
+export async function GET(req: Request): Promise<Response> {
   const payload = await getPayload({ config: configPromise })
-  const token = req.cookies.get(payloadToken)?.value
+  const cookieStore = await cookies()
+  const token = cookieStore.get(payloadToken)?.value
   const { searchParams } = new URL(req.url)
   const path = searchParams.get('path')
   const collection = searchParams.get('collection') as CollectionSlug
@@ -41,11 +34,11 @@ export async function GET(
     }
 
     if (!token) {
-      new Response('You are not allowed to preview this page', { status: 403 })
+      return new Response('You are not allowed to preview this page', { status: 403 })
     }
 
     if (!path.startsWith('/')) {
-      new Response('This endpoint can only be used for internal previews', { status: 500 })
+      return new Response('This endpoint can only be used for internal previews', { status: 500 })
     }
 
     let user
