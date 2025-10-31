@@ -734,11 +734,133 @@ export interface Comment {
  */
 export interface Vehicle {
   id: string;
+  /**
+   * Titre complet du véhicule
+   */
   title: string;
-  price?: number | null;
-  year?: number | null;
-  mileage?: number | null;
-  status?: ('active' | 'sold' | 'reserved') | null;
+  /**
+   * Marque du véhicule
+   */
+  brand: 'audi' | 'bmw' | 'mercedes' | 'porsche' | 'volkswagen' | 'mini' | 'other';
+  /**
+   * Modèle du véhicule
+   */
+  model?: string | null;
+  /**
+   * Catégorie du véhicule
+   */
+  category?: ('suv' | 'berline' | 'coupe' | 'break' | 'monospace' | 'cabriolet' | 'other') | null;
+  /**
+   * Prix en euros
+   */
+  price: number;
+  /**
+   * Année de mise en circulation
+   */
+  year: number;
+  /**
+   * Kilométrage
+   */
+  mileage: number;
+  /**
+   * Nombre de portes
+   */
+  doors?: number | null;
+  /**
+   * Nombre de places
+   */
+  seats?: number | null;
+  /**
+   * Type de carrosserie
+   */
+  bodyType?: ('sedan' | 'wagon' | 'suv' | 'coupe' | 'convertible' | 'van' | 'sportback' | 'touring' | 'other') | null;
+  /**
+   * Type de carburant
+   */
+  fuel: 'essence' | 'diesel' | 'electric' | 'hybrid' | 'plugin-hybrid' | 'other';
+  /**
+   * Type de transmission
+   */
+  transmission: 'manual' | 'automatic' | 'other';
+  /**
+   * Localisation du véhicule
+   */
+  location?: string | null;
+  /**
+   * Description détaillée
+   */
+  description?: string | null;
+  /**
+   * Statut du véhicule
+   */
+  status: 'active' | 'sold' | 'reserved';
+  /**
+   * Couleur extérieure
+   */
+  exteriorColor?: string | null;
+  /**
+   * Couleur intérieure / Sellerie
+   */
+  interiorColor?: string | null;
+  specifications?: {
+    /**
+     * Type de moteur (ex: 2.0 TDI, 320i)
+     */
+    engine?: string | null;
+    /**
+     * Puissance (ex: 192 ch)
+     */
+    power?: string | null;
+    /**
+     * Puissance en kW
+     */
+    powerKw?: number | null;
+    /**
+     * Puissance en chevaux
+     */
+    powerHp?: number | null;
+    /**
+     * Consommation (ex: 6.5 L/100km)
+     */
+    consumption?: string | null;
+    /**
+     * 0-100 km/h (ex: 7.2s)
+     */
+    acceleration?: string | null;
+    /**
+     * Émissions CO2 (g/km)
+     */
+    co2?: string | null;
+  };
+  /**
+   * Liste des équipements du véhicule
+   */
+  features?:
+    | {
+        feature: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * ID externe du véhicule (ImporteMoi, AutoScout24, etc.)
+   */
+  externalId?: string | null;
+  /**
+   * Référence externe (ex: IMP-5474774)
+   */
+  externalReference?: string | null;
+  /**
+   * URL de l'annonce source
+   */
+  sourceUrl?: string | null;
+  /**
+   * Plateforme source (importemoi.fr, autoscout24.de, etc.)
+   */
+  sourcePlatform?: string | null;
+  /**
+   * Date de publication sur la plateforme source
+   */
+  publishedDate?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1221,10 +1343,44 @@ export interface CommentsSelect<T extends boolean = true> {
  */
 export interface VehiclesSelect<T extends boolean = true> {
   title?: T;
+  brand?: T;
+  model?: T;
+  category?: T;
   price?: T;
   year?: T;
   mileage?: T;
+  doors?: T;
+  seats?: T;
+  bodyType?: T;
+  fuel?: T;
+  transmission?: T;
+  location?: T;
+  description?: T;
   status?: T;
+  exteriorColor?: T;
+  interiorColor?: T;
+  specifications?:
+    | T
+    | {
+        engine?: T;
+        power?: T;
+        powerKw?: T;
+        powerHp?: T;
+        consumption?: T;
+        acceleration?: T;
+        co2?: T;
+      };
+  features?:
+    | T
+    | {
+        feature?: T;
+        id?: T;
+      };
+  externalId?: T;
+  externalReference?: T;
+  sourceUrl?: T;
+  sourcePlatform?: T;
+  publishedDate?: T;
   updatedAt?: T;
   createdAt?: T;
 }
