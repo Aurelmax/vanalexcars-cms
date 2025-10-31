@@ -313,5 +313,13 @@ export const Vehicles: CollectionConfig = {
         position: 'sidebar',
       },
     },
+    {
+      name: 'lastScrapedAt',
+      type: 'date',
+      admin: {
+        description: 'Date de la dernière mise à jour par le scraper (pour détection véhicules obsolètes)',
+        position: 'sidebar',
+      },
+    },
   ],
 }
