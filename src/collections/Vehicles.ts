@@ -321,5 +321,20 @@ export const Vehicles: CollectionConfig = {
         position: 'sidebar',
       },
     },
+    {
+      name: 'imageUrls',
+      type: 'array',
+      label: 'URLs des Images',
+      admin: {
+        description: 'URLs des images du véhicule (générées depuis ImporteMoi)',
+      },
+      fields: [
+        {
+          name: 'url',
+          type: 'text',
+          required: true,
+        },
+      ],
+    },
   ],
 }
