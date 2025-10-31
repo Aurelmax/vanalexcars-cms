@@ -156,6 +156,30 @@ export const Vehicles: CollectionConfig = {
       },
     },
     {
+      name: 'dealer',
+      type: 'text',
+      admin: {
+        description: 'Nom de la concession / concessionnaire allemand',
+        placeholder: 'Ex: AutoHaus Munich, BMW Zentrum Berlin...',
+      },
+    },
+    {
+      name: 'dealerCity',
+      type: 'text',
+      admin: {
+        description: 'Ville de la concession',
+        placeholder: 'Ex: Munich, Berlin, Stuttgart...',
+      },
+    },
+    {
+      name: 'dealerContact',
+      type: 'text',
+      admin: {
+        description: 'Contact de la concession (téléphone ou email)',
+        placeholder: 'Ex: +49 89 123456 ou contact@dealer.de',
+      },
+    },
+    {
       name: 'description',
       type: 'textarea',
       admin: {
@@ -336,5 +360,74 @@ export const Vehicles: CollectionConfig = {
         },
       ],
     },
+    {
+      name: 'processedImages',
+      type: 'group',
+      label: 'Images Traitées Studio',
+      admin: {
+        description: 'URLs des images traitées avec Remove.bg + fond studio (4 variantes)',
+      },
+      fields: [
+        {
+          name: 'hero',
+          type: 'text',
+          label: 'Hero (1600×900)',
+          admin: {
+            description: 'Image principale haute résolution',
+          },
+        },
+        {
+          name: 'card',
+          type: 'text',
+          label: 'Card (600×400)',
+          admin: {
+            description: 'Image pour cartes de véhicules',
+          },
+        },
+        {
+          name: 'thumbnail',
+          type: 'text',
+          label: 'Thumbnail (400×300)',
+          admin: {
+            description: 'Miniature pour listes',
+          },
+        },
+        {
+          name: 'social',
+          type: 'text',
+          label: 'Social (1200×630)',
+          admin: {
+            description: 'Image pour partages sociaux',
+          },
+        },
+      ],
+    },
   ],
+  hooks: {
+    afterRead: [
+      ({ doc }) => {
+        // Priorité aux images traitées (Studio) si elles existent
+        if (doc.processedImages?.card) {
+          // Utiliser les images studio (card pour le catalogue, hero pour les détails)
+          doc.mainImage = doc.processedImages.card; // Card optimisée pour vignettes
+          doc.heroImage = doc.processedImages.hero; // Hero pour page de détail
+          doc.galleryImages = [
+            doc.processedImages.hero,
+            doc.processedImages.card,
+            doc.processedImages.thumbnail,
+            doc.processedImages.social,
+          ].filter(Boolean);
+        } else if (doc.imageUrls?.length > 0) {
+          // Fallback sur les images brutes ImporteMoi
+          doc.mainImage = doc.imageUrls[0].url;
+          doc.galleryImages = doc.imageUrls.map((img: any) => img.url);
+        } else {
+          // Pas d'images disponibles
+          doc.mainImage = null;
+          doc.galleryImages = [];
+        }
+        return doc;
+      },
+    ],
+  },
 }

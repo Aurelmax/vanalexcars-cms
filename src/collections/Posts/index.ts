@@ -77,6 +77,70 @@ export const Posts: CollectionConfig<'posts'> = {
       required: true,
     },
     {
+      name: 'excerpt',
+      type: 'textarea',
+      admin: {
+        description: 'Résumé court de l\'article (2-3 phrases)',
+      },
+    },
+    {
+      name: 'featuredImage',
+      type: 'upload',
+      relationTo: 'media',
+      admin: {
+        description: 'Image principale de l\'article',
+      },
+    },
+    {
+      name: 'intention',
+      type: 'select',
+      options: [
+        { label: 'Requête locale d\'achat plaisir', value: 'local-purchase' },
+        { label: 'Intention informationnelle', value: 'informational' },
+        { label: 'Intention inspirationnelle', value: 'inspirational' },
+        { label: 'Intention transactionnelle', value: 'transactional' },
+        { label: 'Intention "plaisir rareté"', value: 'pleasure-rarity' },
+        { label: 'Éducatif / Pédagogie', value: 'educational' },
+        { label: 'Philosophie / Manifeste', value: 'philosophy' },
+        { label: 'Étude de cas', value: 'case-study' },
+      ],
+      admin: {
+        description: 'Intention principale de l\'article',
+        position: 'sidebar',
+      },
+    },
+    {
+      name: 'targetKeyword',
+      type: 'text',
+      admin: {
+        description: 'Mot-clé cible principal',
+        placeholder: 'Ex: mini cooper s cabriolet antibes',
+        position: 'sidebar',
+      },
+    },
+    {
+      name: 'contentType',
+      type: 'select',
+      options: [
+        { label: 'Article SEO local', value: 'seo-local' },
+        { label: 'Comparatif', value: 'comparison' },
+        { label: 'Liste / Top', value: 'list' },
+        { label: 'Guide étape par étape', value: 'guide' },
+        { label: 'Article long', value: 'long-article' },
+        { label: 'Focus rareté', value: 'rarity-focus' },
+        { label: 'Article expert', value: 'expert' },
+        { label: 'Article inspirationnel', value: 'inspirational' },
+        { label: 'Tutoriel pratique', value: 'tutorial' },
+        { label: 'Storytelling', value: 'storytelling' },
+        { label: 'Article d\'opinion', value: 'opinion' },
+        { label: 'Cas client', value: 'case-study' },
+      ],
+      admin: {
+        description: 'Type de contenu',
+        position: 'sidebar',
+      },
+    },
+    {
       type: 'tabs',
       tabs: [
         {

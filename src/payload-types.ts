@@ -440,6 +440,52 @@ export interface Category {
 export interface Post {
   id: string;
   title: string;
+  /**
+   * Résumé court de l'article (2-3 phrases)
+   */
+  excerpt?: string | null;
+  /**
+   * Image principale de l'article
+   */
+  featuredImage?: (string | null) | Media;
+  /**
+   * Intention principale de l'article
+   */
+  intention?:
+    | (
+        | 'local-purchase'
+        | 'informational'
+        | 'inspirational'
+        | 'transactional'
+        | 'pleasure-rarity'
+        | 'educational'
+        | 'philosophy'
+        | 'case-study'
+      )
+    | null;
+  /**
+   * Mot-clé cible principal
+   */
+  targetKeyword?: string | null;
+  /**
+   * Type de contenu
+   */
+  contentType?:
+    | (
+        | 'seo-local'
+        | 'comparison'
+        | 'list'
+        | 'guide'
+        | 'long-article'
+        | 'rarity-focus'
+        | 'expert'
+        | 'inspirational'
+        | 'tutorial'
+        | 'storytelling'
+        | 'opinion'
+        | 'case-study'
+      )
+    | null;
   content: {
     root: {
       type: string;
@@ -787,6 +833,18 @@ export interface Vehicle {
    */
   location?: string | null;
   /**
+   * Nom de la concession / concessionnaire allemand
+   */
+  dealer?: string | null;
+  /**
+   * Ville de la concession
+   */
+  dealerCity?: string | null;
+  /**
+   * Contact de la concession (téléphone ou email)
+   */
+  dealerContact?: string | null;
+  /**
    * Description détaillée
    */
   description?: string | null;
@@ -861,6 +919,40 @@ export interface Vehicle {
    * Date de publication sur la plateforme source
    */
   publishedDate?: string | null;
+  /**
+   * Date de la dernière mise à jour par le scraper (pour détection véhicules obsolètes)
+   */
+  lastScrapedAt?: string | null;
+  /**
+   * URLs des images du véhicule (générées depuis ImporteMoi)
+   */
+  imageUrls?:
+    | {
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * URLs des images traitées avec Remove.bg + fond studio (4 variantes)
+   */
+  processedImages?: {
+    /**
+     * Image principale haute résolution
+     */
+    hero?: string | null;
+    /**
+     * Image pour cartes de véhicules
+     */
+    card?: string | null;
+    /**
+     * Miniature pour listes
+     */
+    thumbnail?: string | null;
+    /**
+     * Image pour partages sociaux
+     */
+    social?: string | null;
+  };
   updatedAt: string;
   createdAt: string;
 }
@@ -1171,6 +1263,11 @@ export interface FormBlockSelect<T extends boolean = true> {
  */
 export interface PostsSelect<T extends boolean = true> {
   title?: T;
+  excerpt?: T;
+  featuredImage?: T;
+  intention?: T;
+  targetKeyword?: T;
+  contentType?: T;
   content?: T;
   relatedPosts?: T;
   categories?: T;
@@ -1355,6 +1452,9 @@ export interface VehiclesSelect<T extends boolean = true> {
   fuel?: T;
   transmission?: T;
   location?: T;
+  dealer?: T;
+  dealerCity?: T;
+  dealerContact?: T;
   description?: T;
   status?: T;
   exteriorColor?: T;
@@ -1381,6 +1481,21 @@ export interface VehiclesSelect<T extends boolean = true> {
   sourceUrl?: T;
   sourcePlatform?: T;
   publishedDate?: T;
+  lastScrapedAt?: T;
+  imageUrls?:
+    | T
+    | {
+        url?: T;
+        id?: T;
+      };
+  processedImages?:
+    | T
+    | {
+        hero?: T;
+        card?: T;
+        thumbnail?: T;
+        social?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }
